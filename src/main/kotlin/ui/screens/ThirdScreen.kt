@@ -35,7 +35,7 @@ fun ThirdScreen(onNavigateToSecond: () -> Unit, onNavigateToFourth: () -> Unit) 
             contentPadding = PaddingValues(0.dp)
         ) {
             Text(
-                "←",
+                "<",
                 fontSize = 24.sp,
                 color = Color.Black
             )
@@ -95,8 +95,8 @@ fun ThirdScreen(onNavigateToSecond: () -> Unit, onNavigateToFourth: () -> Unit) 
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(bottom = 16.dp),
+                .height(64.dp)
+                ,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4169E1)
             ),

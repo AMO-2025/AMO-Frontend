@@ -7,7 +7,7 @@ import ui.App
 fun main() = singleWindowApplication(
     state = WindowState(
         size = DpSize(
-            width = 500.dp,  // 1080px의 1/3
+            width = 450.dp,  // 1080px의 1/3
             height = 800.dp  // 2340px의 1/3
         )
     ),

@@ -6,6 +6,10 @@ import ui.screens.SecondScreen
 import ui.screens.ThirdScreen
 import ui.screens.FourthScreen
 import ui.screens.FifthScreen
+import ui.screens.HomeScreen
+import ui.screens.ParkScreen
+import ui.screens.RestaurantScreen
+import ui.screens.SchoolScreen
 
 @Composable
 fun App() {
@@ -28,7 +32,23 @@ fun App() {
             onNavigateToFifth = { currentScreen = "fifth" }
         )
         "fifth" -> FifthScreen(
-            onNavigateToFourth = { currentScreen = "fourth" }
+            onNavigateToFourth = { currentScreen = "fourth" },
+            onNavigateToHome = { currentScreen = "home" },
+            onNavigateToPark = { currentScreen = "park" },
+            onNavigateToRestaurant = { currentScreen = "restaurant" },
+            onNavigateToSchool = { currentScreen = "school" }
+        )
+        "home" -> HomeScreen(
+            onNavigateBack = { currentScreen = "fifth" }
+        )
+        "park" -> ParkScreen(
+            onNavigateBack = { currentScreen = "fifth" }
+        )
+        "restaurant" -> RestaurantScreen(
+            onNavigateBack = { currentScreen = "fifth" }
+        )
+        "school" -> SchoolScreen(
+            onNavigateBack = { currentScreen = "fifth" }
         )
     }
 } 

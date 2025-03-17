@@ -51,10 +51,13 @@ fun SecondScreen(
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent
             ),
-            contentPadding = PaddingValues(0.dp)
+            contentPadding = PaddingValues(0.dp),
+            modifier = Modifier
+                .offset(x = (-8).dp)
+                .align(Alignment.Start)
         ) {
             Text(
-                "←",
+                "<",
                 fontSize = 24.sp,
                 color = Color.Black
             )
@@ -174,8 +177,7 @@ fun SecondScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(bottom = 16.dp),
+                .height(64.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4169E1)
             ),

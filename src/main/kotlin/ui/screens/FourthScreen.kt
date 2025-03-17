@@ -36,7 +36,7 @@ fun FourthScreen(
             contentPadding = PaddingValues(0.dp)
         ) {
             Text(
-                "←",
+                "<",
                 fontSize = 24.sp,
                 color = Color.Black
             )
@@ -177,7 +177,7 @@ fun FourthScreen(
             onClick = { onNavigateToFifth() },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(64.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4169E1)
             ),
