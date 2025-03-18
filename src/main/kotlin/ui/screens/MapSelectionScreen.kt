@@ -21,8 +21,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.ui.zIndex
 
 @Composable
-fun FifthScreen(
-    onNavigateToFourth: () -> Unit,
+fun MapSelectionScreen(
+    onNavigateToAgreement: () -> Unit,
     onNavigateToHome: () -> Unit,
     onNavigateToPark: () -> Unit,
     onNavigateToRestaurant: () -> Unit,
@@ -59,7 +59,7 @@ fun FifthScreen(
         
         // 뒤로가기 버튼
         Button(
-            onClick = onNavigateToFourth,
+            onClick = onNavigateToAgreement,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent
             ),

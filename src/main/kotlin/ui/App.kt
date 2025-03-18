@@ -1,11 +1,11 @@
 package ui
 
 import androidx.compose.runtime.*
-import ui.screens.FirstScreen
-import ui.screens.SecondScreen
-import ui.screens.ThirdScreen
-import ui.screens.FourthScreen
-import ui.screens.FifthScreen
+import ui.screens.LoginScreen
+import ui.screens.UserInfoScreen
+import ui.screens.NicknameScreen
+import ui.screens.AgreementScreen
+import ui.screens.MapSelectionScreen
 import ui.screens.HomeScreen
 import ui.screens.ParkScreen
 import ui.screens.RestaurantScreen
@@ -13,42 +13,42 @@ import ui.screens.SchoolScreen
 
 @Composable
 fun App() {
-    var currentScreen by remember { mutableStateOf("first") }
+    var currentScreen by remember { mutableStateOf("login") }
     
     when (currentScreen) {
-        "first" -> FirstScreen(
-            onNavigateToSecond = { currentScreen = "second" }
+        "login" -> LoginScreen(
+            onNavigateToUserInfo = { currentScreen = "userInfo" }
         )
-        "second" -> SecondScreen(
-            onNavigateToFirst = { currentScreen = "first" },
-            onNavigateToThird = { currentScreen = "third" }
+        "userInfo" -> UserInfoScreen(
+            onNavigateToLogin = { currentScreen = "login" },
+            onNavigateToNickname = { currentScreen = "nickname" }
         )
-        "third" -> ThirdScreen(
-            onNavigateToSecond = { currentScreen = "second" },
-            onNavigateToFourth = { currentScreen = "fourth" }
+        "nickname" -> NicknameScreen(
+            onNavigateToUserInfo = { currentScreen = "userInfo" },
+            onNavigateToAgreement = { currentScreen = "agreement" }
         )
-        "fourth" -> FourthScreen(
-            onNavigateToThird = { currentScreen = "third" },
-            onNavigateToFifth = { currentScreen = "fifth" }
+        "agreement" -> AgreementScreen(
+            onNavigateToNickname = { currentScreen = "nickname" },
+            onNavigateToMapSelection = { currentScreen = "mapSelection" }
         )
-        "fifth" -> FifthScreen(
-            onNavigateToFourth = { currentScreen = "fourth" },
+        "mapSelection" -> MapSelectionScreen(
+            onNavigateToAgreement = { currentScreen = "agreement" },
             onNavigateToHome = { currentScreen = "home" },
             onNavigateToPark = { currentScreen = "park" },
             onNavigateToRestaurant = { currentScreen = "restaurant" },
             onNavigateToSchool = { currentScreen = "school" }
         )
         "home" -> HomeScreen(
-            onNavigateBack = { currentScreen = "fifth" }
+            onNavigateBack = { currentScreen = "mapSelection" }
         )
         "park" -> ParkScreen(
-            onNavigateBack = { currentScreen = "fifth" }
+            onNavigateBack = { currentScreen = "mapSelection" }
         )
         "restaurant" -> RestaurantScreen(
-            onNavigateBack = { currentScreen = "fifth" }
+            onNavigateBack = { currentScreen = "mapSelection" }
         )
         "school" -> SchoolScreen(
-            onNavigateBack = { currentScreen = "fifth" }
+            onNavigateBack = { currentScreen = "mapSelection" }
         )
     }
 } 

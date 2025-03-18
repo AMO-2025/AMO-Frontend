@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FourthScreen(
-    onNavigateToThird: () -> Unit,
-    onNavigateToFifth: () -> Unit
+fun AgreementScreen(
+    onNavigateToNickname: () -> Unit,
+    onNavigateToMapSelection: () -> Unit
 ) {
     var allAgreed by remember { mutableStateOf(false) }
     var serviceAgreed1 by remember { mutableStateOf(false) }
@@ -29,7 +29,7 @@ fun FourthScreen(
     ) {
         // 뒤로가기 버튼
         Button(
-            onClick = onNavigateToThird,
+            onClick = onNavigateToNickname,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent
             ),
@@ -174,7 +174,7 @@ fun FourthScreen(
         
         // 시작하기 버튼
         Button(
-            onClick = { onNavigateToFifth() },
+            onClick = { onNavigateToMapSelection() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),

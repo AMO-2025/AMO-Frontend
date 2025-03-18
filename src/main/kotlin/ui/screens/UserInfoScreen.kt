@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.sp
 import data.UserRequest
 
 @Composable
-fun SecondScreen(
-    onNavigateToFirst: () -> Unit,
-    onNavigateToThird: () -> Unit
+fun UserInfoScreen(
+    onNavigateToLogin: () -> Unit,
+    onNavigateToNickname: () -> Unit
 ) {
     var userIdentifier by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
@@ -47,7 +47,7 @@ fun SecondScreen(
         horizontalAlignment = Alignment.Start
     ) {
         Button(
-            onClick = onNavigateToFirst,
+            onClick = onNavigateToLogin,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent
             ),
@@ -167,7 +167,7 @@ fun SecondScreen(
                         userIdentifier = userIdentifier,
                         phoneNumber = phoneNumber
                     )
-                    onNavigateToThird()
+                    onNavigateToNickname()
                 } else {
                     // 불일치시 입력값 초기화 및 에러 메시지 표시
                     userIdentifier = ""

@@ -21,7 +21,7 @@ import java.io.File
 import javax.imageio.ImageIO
 
 @Composable
-fun FirstScreen(onNavigateToSecond: () -> Unit) {
+fun LoginScreen(onNavigateToUserInfo: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +56,7 @@ fun FirstScreen(onNavigateToSecond: () -> Unit) {
 
         // 시작하기 버튼
         Button(
-            onClick = onNavigateToSecond,
+            onClick = onNavigateToUserInfo,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()

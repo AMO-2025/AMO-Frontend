@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import data.NicknameRequest
 
 @Composable
-fun ThirdScreen(onNavigateToSecond: () -> Unit, onNavigateToFourth: () -> Unit) {
+fun NicknameScreen(onNavigateToUserInfo: () -> Unit, onNavigateToAgreement: () -> Unit) {
     var nickname by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
 
@@ -28,7 +28,7 @@ fun ThirdScreen(onNavigateToSecond: () -> Unit, onNavigateToFourth: () -> Unit) 
         horizontalAlignment = Alignment.Start
     ) {
         Button(
-            onClick = onNavigateToSecond,
+            onClick = onNavigateToUserInfo,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent
             ),
@@ -91,7 +91,7 @@ fun ThirdScreen(onNavigateToSecond: () -> Unit, onNavigateToFourth: () -> Unit) 
         Button(
             onClick = { 
                 val request = NicknameRequest(nickname = nickname)
-                onNavigateToFourth()
+                onNavigateToAgreement()
             },
             modifier = Modifier
                 .fillMaxWidth()
