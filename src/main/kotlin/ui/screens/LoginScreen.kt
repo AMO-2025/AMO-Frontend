@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
@@ -19,6 +18,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import java.io.File
 import javax.imageio.ImageIO
+import network.NetworkClient
+import util.TokenManager
+import viewmodel.LoginState
+import viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(onNavigateToUserInfo: () -> Unit) {
@@ -54,9 +57,11 @@ fun LoginScreen(onNavigateToUserInfo: () -> Unit) {
                 .wrapContentHeight()
         )
 
-        // 시작하기 버튼
+        // 로그인 버튼 (시작하기 버튼 대체)
         Button(
-            onClick = onNavigateToUserInfo,
+            onClick = { 
+                onNavigateToUserInfo()
+            },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
@@ -83,4 +88,4 @@ fun loadImageBitmap(path: String): ImageBitmap? {
         e.printStackTrace()
         null
     }
-} 
+}

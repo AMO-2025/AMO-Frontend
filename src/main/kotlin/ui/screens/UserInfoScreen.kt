@@ -19,12 +19,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import data.UserRequest
+import kotlinx.coroutines.launch
+import viewmodel.LoginViewModel
+import viewmodel.LoginState
+import util.TokenManager
+import network.NetworkClient
 
 @Composable
 fun UserInfoScreen(
     onNavigateToLogin: () -> Unit,
     onNavigateToNickname: () -> Unit
 ) {
+    // ViewModel 초기화
+    val tokenManager = remember { TokenManager() }
+    val apiService = remember { NetworkClient.createApiService(tokenManager) }
+    val viewModel = remember { LoginViewModel(apiService, tokenManager) }
+    
+    val loginState by viewModel.loginState.collectAsState()
     var userIdentifier by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
     var showError by remember { mutableStateOf(false) }
@@ -39,6 +50,18 @@ fun UserInfoScreen(
 
     val focusManager = LocalFocusManager.current
     val phoneNumberFocusRequester = remember { FocusRequester() }
+    
+    // 처음 화면 로드 시 저장된 토큰 확인
+    LaunchedEffect(Unit) {
+        viewModel.validateSavedToken()
+    }
+    
+    // 로그인 성공 시 다음 화면으로 이동
+    LaunchedEffect(loginState) {
+        if (loginState is LoginState.Success) {
+            onNavigateToNickname()
+        }
+    }
     
     Column(
         modifier = Modifier
@@ -160,19 +183,8 @@ fun UserInfoScreen(
         
         Button(
             onClick = { 
-                // 데이터 일치 여부 확인
-                if (userIdentifier == tempIdentifier && phoneNumber == tempPhoneNumber) {
-                    showError = false
-                    val request = UserRequest(
-                        userIdentifier = userIdentifier,
-                        phoneNumber = phoneNumber
-                    )
-                    onNavigateToNickname()
-                } else {
-                    // 불일치시 입력값 초기화 및 에러 메시지 표시
-                    userIdentifier = ""
-                    phoneNumber = ""
-                    showError = true
+                if (userIdentifier.isNotEmpty() && phoneNumber.isNotEmpty()) {
+                    viewModel.login(userIdentifier, phoneNumber)
                 }
             },
             modifier = Modifier
@@ -184,7 +196,14 @@ fun UserInfoScreen(
             shape = RoundedCornerShape(8.dp),
             enabled = isButtonEnabled  // 입력 필드 조건만으로 활성화 여부 결정
         ) {
-            Text("다음으로", color = Color.White)
+            if (loginState is LoginState.Loading) {
+                CircularProgressIndicator(
+                    color = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            } else {
+                Text("다음으로", color = Color.White)
+            }
         }
     }
 } 
