@@ -10,6 +10,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 
 @Composable
 fun AgreementScreen(
@@ -27,18 +29,14 @@ fun AgreementScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        // 뒤로가기 버튼
-        Button(
+        IconButton(
             onClick = onNavigateToNickname,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent
-            ),
-            contentPadding = PaddingValues(0.dp)
+            modifier = Modifier.padding(start = 0.dp)
         ) {
-            Text(
-                "<",
-                fontSize = 24.sp,
-                color = Color.Black
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "뒤로가기",
+                tint = Color.Black
             )
         }
         

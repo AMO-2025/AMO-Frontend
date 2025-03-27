@@ -12,7 +12,7 @@ import util.TokenManager
 sealed class LoginState {
     object Idle : LoginState()
     object Loading : LoginState()
-    object Success : LoginState()
+    data class Success(val token: String) : LoginState()
     data class Error(val message: String) : LoginState()
 }
 
@@ -27,37 +27,46 @@ class LoginViewModel(
     
     fun login(userIdentifier: String, phoneNumber: String) {
         viewModelScope.launch {
-            _loginState.value = LoginState.Loading
             try {
-                val response = apiService.login(LoginRequest(userIdentifier, phoneNumber))
-                if (response.status == "success") {
+                _loginState.value = LoginState.Loading
+                
+                val request = LoginRequest(
+                    userIdentifier = userIdentifier,
+                    phoneNumber = phoneNumber
+                )
+                
+                val response = apiService.login(request)
+                
+                if (response.status == "success" && response.token != null) {
                     tokenManager.saveToken(response.token)
-                    _loginState.value = LoginState.Success
+                    _loginState.value = LoginState.Success(response.token)
                 } else {
-                    _loginState.value = LoginState.Error(response.message)
+                    _loginState.value = LoginState.Error("인증에 실패했습니다")
                 }
             } catch (e: Exception) {
-                _loginState.value = LoginState.Error(e.message ?: "로그인 실패")
+                _loginState.value = LoginState.Error("네트워크 오류: ${e.localizedMessage ?: "알 수 없는 오류가 발생했습니다"}")
             }
         }
     }
     
     fun validateSavedToken() {
-        val token = tokenManager.getToken()
-        if (token != null) {
-            viewModelScope.launch {
-                try {
+        viewModelScope.launch {
+            try {
+                val token = tokenManager.getToken()
+                if (token != null) {
                     val response = apiService.validateToken("Bearer $token")
                     if (response.status == "success") {
-                        _loginState.value = LoginState.Success
+                        _loginState.value = LoginState.Success(token)
                     } else {
                         tokenManager.clearToken()
                         _loginState.value = LoginState.Idle
                     }
-                } catch (e: Exception) {
-                    tokenManager.clearToken()
+                } else {
                     _loginState.value = LoginState.Idle
                 }
+            } catch (e: Exception) {
+                _loginState.value = LoginState.Idle
+                tokenManager.clearToken()
             }
         }
     }

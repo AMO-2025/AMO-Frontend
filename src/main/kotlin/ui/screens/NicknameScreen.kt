@@ -15,9 +15,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import data.NicknameRequest
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 
 @Composable
-fun NicknameScreen(onNavigateToUserInfo: () -> Unit, onNavigateToAgreement: () -> Unit) {
+fun NicknameScreen(
+    onNavigateToUserInfo: () -> Unit, 
+    onNavigateToAgreement: () -> Unit,
+    onNavigateBack: () -> Unit = onNavigateToUserInfo
+) {
     var nickname by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
 
@@ -27,17 +33,14 @@ fun NicknameScreen(onNavigateToUserInfo: () -> Unit, onNavigateToAgreement: () -
             .padding(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        Button(
-            onClick = onNavigateToUserInfo,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent
-            ),
-            contentPadding = PaddingValues(0.dp)
+        IconButton(
+            onClick = onNavigateBack,
+            modifier = Modifier.padding(start = 0.dp)
         ) {
-            Text(
-                "<",
-                fontSize = 24.sp,
-                color = Color.Black
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "뒤로가기",
+                tint = Color.Black
             )
         }
         

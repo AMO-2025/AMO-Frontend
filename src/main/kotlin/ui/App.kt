@@ -10,9 +10,17 @@ import ui.screens.HomeScreen
 import ui.screens.ParkScreen
 import ui.screens.RestaurantScreen
 import ui.screens.SchoolScreen
+import util.TokenManager
 
 @Composable
 fun App() {
+    // 앱 시작 시 저장된 토큰 삭제 (개발 중에만 사용)
+    val tokenManager = remember { TokenManager() }
+    LaunchedEffect(Unit) {
+        tokenManager.clearToken()
+    }
+    
+    
     var currentScreen by remember { mutableStateOf("login") }
     
     when (currentScreen) {
@@ -36,7 +44,8 @@ fun App() {
             onNavigateToHome = { currentScreen = "home" },
             onNavigateToPark = { currentScreen = "park" },
             onNavigateToRestaurant = { currentScreen = "restaurant" },
-            onNavigateToSchool = { currentScreen = "school" }
+            onNavigateToSchool = { currentScreen = "school" },
+            onNavigateBack = { currentScreen = "agreement" }
         )
         "home" -> HomeScreen(
             onNavigateBack = { currentScreen = "mapSelection" }

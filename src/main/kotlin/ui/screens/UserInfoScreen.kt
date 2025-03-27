@@ -24,6 +24,8 @@ import viewmodel.LoginViewModel
 import viewmodel.LoginState
 import util.TokenManager
 import network.NetworkClient
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 
 @Composable
 fun UserInfoScreen(
@@ -39,6 +41,7 @@ fun UserInfoScreen(
     var userIdentifier by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
     var showError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
     
     // 임시 데이터
     val tempIdentifier = "JINO338"
@@ -53,13 +56,32 @@ fun UserInfoScreen(
     
     // 처음 화면 로드 시 저장된 토큰 확인
     LaunchedEffect(Unit) {
-        viewModel.validateSavedToken()
+        try {
+            viewModel.validateSavedToken()
+        } catch (e: Exception) {
+            showError = true
+            errorMessage = "토큰 검증 중 오류가 발생했습니다: ${e.localizedMessage ?: "알 수 없는 오류"}"
+        }
     }
     
-    // 로그인 성공 시 다음 화면으로 이동
+    // 로그인 상태 변화 감지
     LaunchedEffect(loginState) {
-        if (loginState is LoginState.Success) {
-            onNavigateToNickname()
+        when (loginState) {
+            is LoginState.Success -> {
+                try {
+                    onNavigateToNickname()
+                } catch (e: Exception) {
+                    showError = true
+                    errorMessage = "화면 전환 중 오류가 발생했습니다: ${e.localizedMessage ?: "알 수 없는 오류"}"
+                }
+            }
+            is LoginState.Error -> {
+                showError = true
+                errorMessage = (loginState as LoginState.Error).message
+            }
+            else -> {
+                // Idle 또는 Loading 상태는 별도 처리 없음
+            }
         }
     }
     
@@ -69,20 +91,15 @@ fun UserInfoScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        Button(
+        // 뒤로가기 버튼
+        IconButton(
             onClick = onNavigateToLogin,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent
-            ),
-            contentPadding = PaddingValues(0.dp),
-            modifier = Modifier
-                .offset(x = (-8).dp)
-                .align(Alignment.Start)
+            modifier = Modifier.padding(8.dp)
         ) {
-            Text(
-                "<",
-                fontSize = 24.sp,
-                color = Color.Black
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "뒤로가기",
+                tint = Color.Black
             )
         }
         
@@ -171,7 +188,7 @@ fun UserInfoScreen(
         // 에러 메시지
         if (showError) {
             Text(
-                text = "확인되지 않은 식별번호와 전화번호입니다.",
+                text = errorMessage,
                 color = Color.Red,
                 fontSize = 12.sp,
                 modifier = Modifier
@@ -184,7 +201,13 @@ fun UserInfoScreen(
         Button(
             onClick = { 
                 if (userIdentifier.isNotEmpty() && phoneNumber.isNotEmpty()) {
-                    viewModel.login(userIdentifier, phoneNumber)
+                    try {
+                        showError = false // 이전 에러 메시지 초기화
+                        viewModel.login(userIdentifier, phoneNumber)
+                    } catch (e: Exception) {
+                        showError = true
+                        errorMessage = "로그인 요청 중 오류가 발생했습니다: ${e.localizedMessage ?: "알 수 없는 오류"}"
+                    }
                 }
             },
             modifier = Modifier
@@ -194,7 +217,7 @@ fun UserInfoScreen(
                 containerColor = Color(0xFF4169E1)
             ),
             shape = RoundedCornerShape(8.dp),
-            enabled = isButtonEnabled  // 입력 필드 조건만으로 활성화 여부 결정
+            enabled = isButtonEnabled && loginState !is LoginState.Loading
         ) {
             if (loginState is LoginState.Loading) {
                 CircularProgressIndicator(
