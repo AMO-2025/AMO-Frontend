@@ -22,6 +22,37 @@ import androidx.compose.ui.zIndex
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 
+// 맵 요소들의 위치를 정의하는 상수
+private object MapPositions {
+    // MapLine 크기 조정
+    val MAP_LINE_HORIZONTAL_PADDING = 80.dp
+    val MAP_LINE_VERTICAL_PADDING = 80.dp
+    
+    // Restaurant 위치
+    val RESTAURANT_OFFSET_X = 15.dp
+    val RESTAURANT_OFFSET_Y = 120.dp
+    
+    // School 위치
+    val SCHOOL_OFFSET_X = (-42).dp
+    val SCHOOL_OFFSET_Y = 0.dp  // 위로 이동
+    
+    // Park 위치
+    val PARK_OFFSET_X = (-42).dp
+    val PARK_OFFSET_Y = (-40).dp
+    
+    // Home 위치
+    val HOME_OFFSET_X = 15.dp
+    val HOME_OFFSET_Y = (-210).dp
+    
+    // 은우 캐릭터 위치
+    val ENU_OFFSET_X = (-40).dp
+    val ENU_OFFSET_Y = (-30).dp
+    
+    // 요소들의 크기
+    val LOCATION_SIZE = 170.dp
+    val ENU_SIZE = 150.dp
+}
+
 @Composable
 fun MapSelectionScreen(
     onNavigateToAgreement: () -> Unit,
@@ -48,7 +79,10 @@ fun MapSelectionScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .padding(
+                    horizontal = MapPositions.MAP_LINE_HORIZONTAL_PADDING,
+                    vertical = MapPositions.MAP_LINE_VERTICAL_PADDING
+                )
                 .zIndex(-1f),
             contentAlignment = Alignment.Center
         ) {
@@ -83,9 +117,9 @@ fun MapSelectionScreen(
                 painter = painterResource("Restaurant.png"),
                 contentDescription = "Restaurant",
                 modifier = Modifier
-                    .size(95.dp)
+                    .size(MapPositions.LOCATION_SIZE)
                     .align(Alignment.TopStart)
-                    .offset(x = 60.dp, y = 150.dp)
+                    .offset(x = MapPositions.RESTAURANT_OFFSET_X, y = MapPositions.RESTAURANT_OFFSET_Y)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
@@ -104,9 +138,9 @@ fun MapSelectionScreen(
                 painter = painterResource("School.png"),
                 contentDescription = "School",
                 modifier = Modifier
-                    .size(95.dp)
+                    .size(MapPositions.LOCATION_SIZE)
                     .align(Alignment.TopEnd)
-                    .offset(x = (-60).dp, y = 150.dp)
+                    .offset(x = MapPositions.SCHOOL_OFFSET_X, y = MapPositions.SCHOOL_OFFSET_Y)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
@@ -125,9 +159,9 @@ fun MapSelectionScreen(
                 painter = painterResource("Park.png"),
                 contentDescription = "Park",
                 modifier = Modifier
-                    .size(95.dp)
+                    .size(MapPositions.LOCATION_SIZE)
                     .align(Alignment.CenterEnd)
-                    .offset(x = (-60).dp, y = 30.dp)
+                    .offset(x = MapPositions.PARK_OFFSET_X, y = MapPositions.PARK_OFFSET_Y)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
@@ -146,9 +180,9 @@ fun MapSelectionScreen(
                 painter = painterResource("Home.png"),
                 contentDescription = "Home",
                 modifier = Modifier
-                    .size(95.dp)
+                    .size(MapPositions.LOCATION_SIZE)
                     .align(Alignment.BottomStart)
-                    .offset(x = 60.dp, y = (-160).dp)
+                    .offset(x = MapPositions.HOME_OFFSET_X, y = MapPositions.HOME_OFFSET_Y)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
@@ -167,9 +201,9 @@ fun MapSelectionScreen(
                 painter = painterResource("EnuBack.png"),
                 contentDescription = "Enu Back",
                 modifier = Modifier
-                    .size(170.dp)
+                    .size(MapPositions.ENU_SIZE)
                     .align(Alignment.BottomEnd)
-                    .offset(x = (-40).dp, y = (-30).dp)
+                    .offset(x = MapPositions.ENU_OFFSET_X, y = MapPositions.ENU_OFFSET_Y)
                     .zIndex(1f)
             )
         }

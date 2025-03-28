@@ -20,25 +20,9 @@ fun App() {
         tokenManager.clearToken()
     }
     
-    
-    var currentScreen by remember { mutableStateOf("login") }
+    var currentScreen by remember { mutableStateOf("mapSelection") }  // 시작 화면을 mapSelection으로 변경
     
     when (currentScreen) {
-        "login" -> LoginScreen(
-            onNavigateToUserInfo = { currentScreen = "userInfo" }
-        )
-        "userInfo" -> UserInfoScreen(
-            onNavigateToLogin = { currentScreen = "login" },
-            onNavigateToNickname = { currentScreen = "nickname" }
-        )
-        "nickname" -> NicknameScreen(
-            onNavigateToUserInfo = { currentScreen = "userInfo" },
-            onNavigateToAgreement = { currentScreen = "agreement" }
-        )
-        "agreement" -> AgreementScreen(
-            onNavigateToNickname = { currentScreen = "nickname" },
-            onNavigateToMapSelection = { currentScreen = "mapSelection" }
-        )
         "mapSelection" -> MapSelectionScreen(
             onNavigateToAgreement = { currentScreen = "agreement" },
             onNavigateToHome = { currentScreen = "home" },
@@ -59,5 +43,23 @@ fun App() {
         "school" -> SchoolScreen(
             onNavigateBack = { currentScreen = "mapSelection" }
         )
+        // 테스트를 위해 다른 화면들은 주석 처리
+        /*
+        "login" -> LoginScreen(
+            onNavigateToUserInfo = { currentScreen = "userInfo" }
+        )
+        "userInfo" -> UserInfoScreen(
+            onNavigateToLogin = { currentScreen = "login" },
+            onNavigateToNickname = { currentScreen = "nickname" }
+        )
+        "nickname" -> NicknameScreen(
+            onNavigateToUserInfo = { currentScreen = "userInfo" },
+            onNavigateToAgreement = { currentScreen = "agreement" }
+        )
+        "agreement" -> AgreementScreen(
+            onNavigateToNickname = { currentScreen = "nickname" },
+            onNavigateToMapSelection = { currentScreen = "mapSelection" }
+        )
+        */
     }
 } 

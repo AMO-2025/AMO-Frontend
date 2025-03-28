@@ -40,7 +40,7 @@ dependencies {
     implementation("com.auth0:java-jwt:4.3.0")
     
     // 설정 저장을 위한 라이브러리 (토큰 저장용, DataStore 대체)
-    implementation("com.russhwolf:multiplatform-settings:1.0.0")
+    implementation("com.russhwolf:multiplatform-settings:1.1.1")
     
     // ViewModel 라이브러리 변경
     // implementation("io.github.thechance101:compose-viewmodel:0.2.0") // 오류 발생 라이브러리

@@ -94,7 +94,7 @@ fun UserInfoScreen(
         // 뒤로가기 버튼
         IconButton(
             onClick = onNavigateToLogin,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(start = 0.dp)
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,

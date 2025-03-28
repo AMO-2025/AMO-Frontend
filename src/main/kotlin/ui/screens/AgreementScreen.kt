@@ -29,6 +29,7 @@ fun AgreementScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
+        // 뒤로가기 버튼
         IconButton(
             onClick = onNavigateToNickname,
             modifier = Modifier.padding(start = 0.dp)
