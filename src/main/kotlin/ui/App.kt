@@ -10,6 +10,7 @@ import ui.screens.HomeScreen
 import ui.screens.ParkScreen
 import ui.screens.RestaurantScreen
 import ui.screens.SchoolScreen
+import ui.screens.scenario.HomeScenario1Screen
 import util.TokenManager
 
 @Composable
@@ -20,31 +21,9 @@ fun App() {
         tokenManager.clearToken()
     }
     
-    var currentScreen by remember { mutableStateOf("mapSelection") }  // 시작 화면을 mapSelection으로 변경
+    var currentScreen by remember { mutableStateOf("login") }  // 시작 화면을 login으로 변경
     
     when (currentScreen) {
-        "mapSelection" -> MapSelectionScreen(
-            onNavigateToAgreement = { currentScreen = "agreement" },
-            onNavigateToHome = { currentScreen = "home" },
-            onNavigateToPark = { currentScreen = "park" },
-            onNavigateToRestaurant = { currentScreen = "restaurant" },
-            onNavigateToSchool = { currentScreen = "school" },
-            onNavigateBack = { currentScreen = "agreement" }
-        )
-        "home" -> HomeScreen(
-            onNavigateBack = { currentScreen = "mapSelection" }
-        )
-        "park" -> ParkScreen(
-            onNavigateBack = { currentScreen = "mapSelection" }
-        )
-        "restaurant" -> RestaurantScreen(
-            onNavigateBack = { currentScreen = "mapSelection" }
-        )
-        "school" -> SchoolScreen(
-            onNavigateBack = { currentScreen = "mapSelection" }
-        )
-        // 테스트를 위해 다른 화면들은 주석 처리
-        /*
         "login" -> LoginScreen(
             onNavigateToUserInfo = { currentScreen = "userInfo" }
         )
@@ -60,6 +39,29 @@ fun App() {
             onNavigateToNickname = { currentScreen = "nickname" },
             onNavigateToMapSelection = { currentScreen = "mapSelection" }
         )
-        */
+        "mapSelection" -> MapSelectionScreen(
+            onNavigateToAgreement = { currentScreen = "agreement" },
+            onNavigateToHome = { currentScreen = "home" },
+            onNavigateToPark = { currentScreen = "park" },
+            onNavigateToRestaurant = { currentScreen = "restaurant" },
+            onNavigateToSchool = { currentScreen = "school" },
+            onNavigateBack = { currentScreen = "agreement" }
+        )
+        "home" -> HomeScreen(
+            onNavigateBack = { currentScreen = "mapSelection" },
+            onNavigateToScenario1 = { currentScreen = "homeScenario1" }
+        )
+        "homeScenario1" -> HomeScenario1Screen(
+            onNavigateBack = { currentScreen = "home" }
+        )
+        "park" -> ParkScreen(
+            onNavigateBack = { currentScreen = "mapSelection" }
+        )
+        "restaurant" -> RestaurantScreen(
+            onNavigateBack = { currentScreen = "mapSelection" }
+        )
+        "school" -> SchoolScreen(
+            onNavigateBack = { currentScreen = "mapSelection" }
+        )
     }
 } 
