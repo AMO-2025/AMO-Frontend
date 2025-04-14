@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.zIndex
+import androidx.compose.ui.draw.alpha
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -106,6 +107,51 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
     var showEmotionSelection by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     var isTypingComplete by remember { mutableStateOf(false) }
+    
+    // 페이드 인 효과를 위한 alpha 값들
+    var mapTitleAlpha by remember { mutableStateOf(0f) }
+    var mainTitleAlpha by remember { mutableStateOf(0f) }
+    var characterImageAlpha by remember { mutableStateOf(0f) }
+    var startButtonAlpha by remember { mutableStateOf(0f) }
+    
+    // 대화 화면에서는 페이드 인 효과를 사용하지 않음
+    var dialogueBoxAlpha by remember { mutableStateOf(1f) }
+    var dialogueTextAlpha by remember { mutableStateOf(1f) }
+    var nextButtonAlpha by remember { mutableStateOf(1f) }
+    
+    // 페이드 인 효과 적용
+    LaunchedEffect(scenarioState) {
+        when (scenarioState) {
+            ScenarioState.INITIAL -> {
+                // 초기 화면 페이드 인 효과
+                for (i in 0..10) {
+                    mapTitleAlpha = i / 10f
+                    delay(50)
+                }
+                
+                for (i in 0..10) {
+                    mainTitleAlpha = i / 10f
+                    delay(50)
+                }
+                
+                for (i in 0..10) {
+                    characterImageAlpha = i / 10f
+                    delay(50)
+                }
+                
+                for (i in 0..10) {
+                    startButtonAlpha = i / 10f
+                    delay(50)
+                }
+            }
+            else -> {
+                // 대화 화면에서는 페이드 인 효과를 사용하지 않음
+                dialogueBoxAlpha = 1f
+                dialogueTextAlpha = 1f
+                nextButtonAlpha = 1f
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -174,7 +220,9 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF4A6FFF),
-                                modifier = Modifier.padding(top = 80.dp)
+                                modifier = Modifier
+                                    .padding(top = 80.dp)
+                                    .alpha(mapTitleAlpha)
                             )
                             
                             // 메인 텍스트
@@ -183,7 +231,9 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                 fontSize = 32.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
-                                modifier = Modifier.padding(top = 24.dp)
+                                modifier = Modifier
+                                    .padding(top = 24.dp)
+                                    .alpha(mainTitleAlpha)
                             )
                         }
                         
@@ -195,6 +245,7 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                 .size(400.dp)
                                 .padding(top = if (scenarioState == ScenarioState.INITIAL) 40.dp else 80.dp)
                                 .zIndex(1f)
+                                .alpha(characterImageAlpha)
                         )
                     }
 
@@ -209,6 +260,7 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                     Color(0xFF4A4A4A),
                                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
                                 )
+                                .alpha(dialogueBoxAlpha)
                         ) {
                             Column(
                                 modifier = Modifier
@@ -248,12 +300,16 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                 DialogueText(
                                     text1 = text1,
                                     text2 = text2,
-                                    modifier = Modifier.weight(1f),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .alpha(dialogueTextAlpha),
                                     onComplete = { isTypingComplete = true }
                                 )
 
                                 Box(
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .alpha(nextButtonAlpha),
                                     contentAlignment = Alignment.CenterEnd
                                 ) {
                                     Text(
@@ -289,7 +345,8 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                 .align(Alignment.BottomCenter)
                                 .fillMaxWidth()
                                 .padding(horizontal = 32.dp)
-                                .padding(bottom = 32.dp),
+                                .padding(bottom = 32.dp)
+                                .alpha(startButtonAlpha),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFF4A6FFF)
                             )
@@ -322,6 +379,23 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
 
 @Composable
 fun EmotionSelectionScreen(onEmotionSelected: () -> Unit) {
+    // 감정 선택 화면의 페이드 인 효과를 위한 alpha 값들
+    var emotionImageAlpha by remember { mutableStateOf(0f) }
+    var emotionButtonAlpha by remember { mutableStateOf(0f) }
+    
+    // 페이드 인 효과 적용
+    LaunchedEffect(Unit) {
+        for (i in 0..10) {
+            emotionImageAlpha = i / 10f
+            delay(50)
+        }
+        
+        for (i in 0..10) {
+            emotionButtonAlpha = i / 10f
+            delay(50)
+        }
+    }
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -333,7 +407,8 @@ fun EmotionSelectionScreen(onEmotionSelected: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp),
+                .padding(bottom = 16.dp)
+                .alpha(emotionImageAlpha),
             horizontalArrangement = Arrangement.Center
         ) {
             Image(
@@ -350,7 +425,8 @@ fun EmotionSelectionScreen(onEmotionSelected: () -> Unit) {
             onClick = onEmotionSelected,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 32.dp)
+                .alpha(emotionButtonAlpha),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4A6FFF)
             )

@@ -71,6 +71,12 @@ fun HomeScreen(
     // 폭탄이 지나갔는지 확인하는 상태
     var hasPassedBomb by remember { mutableStateOf(false) }
     
+    // 전체 화면 페이드아웃 효과를 위한 alpha 값
+    var screenAlpha by remember { mutableStateOf(1f) }
+    
+    // 페이드아웃 완료 여부
+    var isFadeOutComplete by remember { mutableStateOf(false) }
+    
     // x축 이동 제한 값 (dp 단위)
     val maxOffsetX = 150f  // 오른쪽 최대 이동 거리
     val minOffsetX = -150f // 왼쪽 최대 이동 거리
@@ -111,6 +117,14 @@ fun HomeScreen(
                         if (characterOffsetX >= npcOffsetX - npcCollisionRange && 
                             characterOffsetX <= npcOffsetX + npcCollisionRange) {
                             isCollision = true
+                            
+                            // 전체 화면 페이드아웃 효과 적용
+                            for (i in 10 downTo 0) {
+                                screenAlpha = i / 10f
+                                delay(50) // 0.5초 동안 페이드아웃
+                            }
+                            
+                            isFadeOutComplete = true
                             onNavigateToScenario1()
                             break
                         }
@@ -212,6 +226,7 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFEBEFFF))
+            .alpha(screenAlpha)
     ) {
         // 사다리꼴 배경
         Box(
