@@ -21,7 +21,8 @@ fun App() {
         tokenManager.clearToken()
     }
     
-    var currentScreen by remember { mutableStateOf("login") }  // 시작 화면을 login으로 변경
+    // var currentScreen by remember { mutableStateOf("login") }  // 시작 화면을 login으로 변경
+    var currentScreen by remember { mutableStateOf("mapSelection") }  // 시작 화면을 mapSelection으로 변경
     
     when (currentScreen) {
         "login" -> LoginScreen(

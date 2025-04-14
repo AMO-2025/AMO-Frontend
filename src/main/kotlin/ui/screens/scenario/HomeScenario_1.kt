@@ -122,6 +122,41 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                     }
                 )
             }
+            scenarioState == ScenarioState.COMPLETED -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "시나리오가 성공적으로 완료되었습니다!",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF4A6FFF),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(bottom = 32.dp)
+                    )
+                    
+                    Button(
+                        onClick = onNavigateBack,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF4A6FFF)
+                        )
+                    ) {
+                        Text(
+                            text = "맵 선택으로 돌아가기",
+                            fontSize = 20.sp,
+                            color = Color.White,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                }
+            }
             else -> {
                 Box(
                     modifier = Modifier.fillMaxSize()
@@ -182,12 +217,31 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                 verticalArrangement = Arrangement.SpaceBetween
                             ) {
                                 val (text1, text2) = when (scenarioState) {
-                                    ScenarioState.DIALOGUE1 -> "으아아아 ㅠㅠ" to "너우 아파.."
-                                    ScenarioState.DIALOGUE2 -> "어!" to "은우야 안녕?"
-                                    ScenarioState.DIALOGUE3 -> "나 오늘" to "돌뿌리에 걸려서\n넘어졌어 ㅠㅠ"
-                                    ScenarioState.DIALOGUE4 -> "이때 내가" to "어떤 기분이었을까?"
-                                    ScenarioState.EMOTION_RESPONSE -> "맞아 ㅠㅠ" to "나 너무 슬펐어."
-                                    ScenarioState.FINAL -> "그럼 내 표정을" to "따라해볼래?"
+                                    ScenarioState.DIALOGUE1 -> """
+                                        으아아아 ㅠㅠ
+                                        너무 아파..
+                                    """.trimIndent() to ""
+                                    ScenarioState.DIALOGUE2 -> """
+                                        어?
+                                        은우야 안녕?
+                                    """.trimIndent() to ""
+                                    ScenarioState.DIALOGUE3 -> """
+                                        나 오늘
+                                        돌뿌리에 걸려서
+                                        넘어졌어 ㅠㅠ
+                                    """.trimIndent() to ""
+                                    ScenarioState.DIALOGUE4 -> """
+                                        이때 내가
+                                        어떤 기분이었을까?
+                                    """.trimIndent() to ""
+                                    ScenarioState.EMOTION_RESPONSE -> """
+                                        맞아 ㅠㅠ
+                                        나 너무 슬펐어..
+                                    """.trimIndent() to ""
+                                    ScenarioState.FINAL -> """
+                                        그럼 내 표정을
+                                        따라해볼래?
+                                    """.trimIndent() to ""
                                     else -> "" to ""
                                 }
 
@@ -216,7 +270,7 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                                         ScenarioState.DIALOGUE3 -> scenarioState = ScenarioState.DIALOGUE4
                                                         ScenarioState.DIALOGUE4 -> showEmotionSelection = true
                                                         ScenarioState.EMOTION_RESPONSE -> scenarioState = ScenarioState.FINAL
-                                                        ScenarioState.FINAL -> {} // 시나리오 종료
+                                                        ScenarioState.FINAL -> scenarioState = ScenarioState.COMPLETED
                                                         else -> {}
                                                     }
                                                 }
@@ -318,5 +372,6 @@ enum class ScenarioState {
     DIALOGUE3,
     DIALOGUE4,
     EMOTION_RESPONSE,
-    FINAL
+    FINAL,
+    COMPLETED
 }
