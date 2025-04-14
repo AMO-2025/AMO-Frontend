@@ -165,6 +165,18 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                         showEmotionSelection = false
                         scenarioState = ScenarioState.EMOTION_RESPONSE
                         isTypingComplete = false
+                    },
+                    onWrongEmotionSelected = {
+                        showEmotionSelection = false
+                        scenarioState = ScenarioState.WRONG_EMOTION
+                        isTypingComplete = false
+                    }
+                )
+            }
+            scenarioState == ScenarioState.FACE_RECOGNITION -> {
+                FaceRecognitionScreen(
+                    onNext = {
+                        scenarioState = ScenarioState.COMPLETED
                     }
                 )
             }
@@ -177,7 +189,7 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "시나리오가 성공적으로 완료되었습니다!",
+                        text = "시나리오가 성공적으로\n완료되었습니다!",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF4A6FFF),
@@ -286,6 +298,9 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                         이때 내가
                                         어떤 기분이었을까?
                                     """.trimIndent() to ""
+                                    ScenarioState.WRONG_EMOTION -> """
+                                        음.. 다시 골라볼래?
+                                    """.trimIndent() to ""
                                     ScenarioState.EMOTION_RESPONSE -> """
                                         맞아 ㅠㅠ
                                         나 너무 슬펐어..
@@ -325,8 +340,12 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
                                                         ScenarioState.DIALOGUE2 -> scenarioState = ScenarioState.DIALOGUE3
                                                         ScenarioState.DIALOGUE3 -> scenarioState = ScenarioState.DIALOGUE4
                                                         ScenarioState.DIALOGUE4 -> showEmotionSelection = true
+                                                        ScenarioState.WRONG_EMOTION -> {
+                                                            showEmotionSelection = true
+                                                            isTypingComplete = false
+                                                        }
                                                         ScenarioState.EMOTION_RESPONSE -> scenarioState = ScenarioState.FINAL
-                                                        ScenarioState.FINAL -> scenarioState = ScenarioState.COMPLETED
+                                                        ScenarioState.FINAL -> scenarioState = ScenarioState.FACE_RECOGNITION
                                                         else -> {}
                                                     }
                                                 }
@@ -378,65 +397,108 @@ fun HomeScenario1Screen(onNavigateBack: () -> Unit) {
 }
 
 @Composable
-fun EmotionSelectionScreen(onEmotionSelected: () -> Unit) {
-    // 감정 선택 화면의 페이드 인 효과를 위한 alpha 값들
-    var emotionImageAlpha by remember { mutableStateOf(0f) }
-    var emotionButtonAlpha by remember { mutableStateOf(0f) }
-    
-    // 페이드 인 효과 적용
-    LaunchedEffect(Unit) {
-        for (i in 0..10) {
-            emotionImageAlpha = i / 10f
-            delay(50)
-        }
-        
-        for (i in 0..10) {
-            emotionButtonAlpha = i / 10f
-            delay(50)
+fun EmotionSelectionScreen(
+    onEmotionSelected: () -> Unit,
+    onWrongEmotionSelected: () -> Unit
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            // Happy 표정 버튼
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable {
+                    onWrongEmotionSelected()
+                }
+            ) {
+                Image(
+                    painter = painterResource("Scenario_1_happy.png"),
+                    contentDescription = "Happy Emotion",
+                    modifier = Modifier
+                        .size(160.dp)
+                        .padding(8.dp)
+                )
+                Text(
+                    text = "기쁨",
+                    color = Color.Black,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            // Sad 표정 버튼
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable {
+                    onEmotionSelected()
+                }
+            ) {
+                Image(
+                    painter = painterResource("Scenario_1_sad.png"),
+                    contentDescription = "Sad Emotion",
+                    modifier = Modifier
+                        .size(160.dp)
+                        .padding(8.dp)
+                )
+                Text(
+                    text = "슬픔",
+                    color = Color.Black,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
         }
     }
-    
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+}
+
+@Composable
+fun FaceRecognitionScreen(onNext: () -> Unit) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        // 표정 선택 이미지들
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
-                .alpha(emotionImageAlpha),
-            horizontalArrangement = Arrangement.Center
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            Image(
-                painter = painterResource("Scenario_1.png"),
-                contentDescription = "Sad Emotion",
+            // 표정 인식 화면 (임시)
+            Box(
                 modifier = Modifier
-                    .size(160.dp)
-                    .padding(8.dp)
-            )
-        }
-        
-        // 다음 버튼
-        Button(
-            onClick = onEmotionSelected,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .alpha(emotionButtonAlpha),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF4A6FFF)
-            )
-        ) {
-            Text(
-                text = "다음",
-                fontSize = 20.sp,
-                color = Color.White,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
+                    .size(300.dp)
+                    .background(Color.LightGray, RoundedCornerShape(16.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "표정 인식 화면",
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+            }
+
+            // 다음 버튼
+            Button(
+                onClick = onNext,
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4A6FFF)
+                )
+            ) {
+                Text(
+                    text = "다음으로",
+                    fontSize = 18.sp,
+                    color = Color.White
+                )
+            }
         }
     }
 }
@@ -447,7 +509,9 @@ enum class ScenarioState {
     DIALOGUE2,
     DIALOGUE3,
     DIALOGUE4,
+    WRONG_EMOTION,
     EMOTION_RESPONSE,
     FINAL,
+    FACE_RECOGNITION,
     COMPLETED
 }
